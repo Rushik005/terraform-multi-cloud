@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 # -----------------------------
-# Network (VPC)
+# Network
 # -----------------------------
 module "network" {
   source       = "../../../modules/aws-network"
@@ -22,21 +22,35 @@ module "network" {
   vpc_cidr     = "10.0.0.0/16"
   subnet_cidr  = "10.0.1.0/24"
   az           = var.availability_zone
+  tags         = var.common_tags
 }
 
 # -----------------------------
-# Compute (EC2)
+# Application Load Balancer
 # -----------------------------
-module "ec2" {
-  source        = "../../../modules/aws-ec2"
-  name          = "dev-ec2"
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = module.network.vpc_id
+module "alb" {
+  source     = "../../../modules/aws-alb"
+  name       = "dev-alb"
+  vpc_id     = module.network.vpc_id
+  subnet_ids = module.network.subnet_ids
+  tags       = var.common_tags
+}
 
-  tags = {
-    Environment = "dev"
-    ManagedBy   = "terraform"
-    CostCenter  = "devops"
-  }
+# -----------------------------
+# Auto Scaling Group
+# -----------------------------
+module "asg" {
+  source              = "../../../modules/aws-asg"
+  name                = "dev-asg"
+  ami_id              = var.ami_id
+  instance_type       = var.instance_type
+  subnet_ids          = module.network.subnet_ids
+  target_group_arn    = module.alb.target_group_arn
+  security_group_ids  = [module.network.app_sg_id]
+
+  min_size         = 1
+  max_size         = 2
+  desired_capacity = 1
+
+  tags = var.common_tags
 }
