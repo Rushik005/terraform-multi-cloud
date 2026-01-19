@@ -8,6 +8,16 @@ Dev vs Stage vs Prod in AWS
 | Tags         | dev          | stage          | prod          |
 | Logic        | Same         | Same           | Same          |
 
+Architecture Parity in AWS
+| Feature         | Dev   | Stage  | Prod  |
+| --------------- | ----- | ------ | ----- |
+| ALB             | ✅     | ✅      | ✅     |
+| ASG             | ✅     | ✅      | ✅     |
+| Launch Template | ✅     | ✅      | ✅     |
+| Health checks   | ✅     | ✅      | ✅     |
+| Mandatory tags  | ✅     | ✅      | ✅     |
+| Scale           | Small | Medium | Large |
+
 
 Dev vs Stage vs Prod in GCP
 
