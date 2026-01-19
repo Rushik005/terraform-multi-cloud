@@ -1,8 +1,22 @@
+terraform {
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0"
+    }
+  }
+}
+
 provider "google" {
   project = var.project_id
   region  = var.region
 }
 
+# -----------------------------
+# Network
+# -----------------------------
 module "network" {
   source      = "../../../modules/gcp-network"
   name        = "dev-vpc"
@@ -11,16 +25,20 @@ module "network" {
   subnet_cidr = "10.10.0.0/24"
 }
 
-module "vm" {
-  source            = "../../../modules/gcp-gce"
-  name              = "dev-vm"
-  project_id        = var.project_id
-  zone              = "us-central1-a"
-  machine_type      = "e2-medium"
-  subnet_self_link  = module.network.subnet_self_link
-  tags              = ["dev"]
+# -----------------------------
+# Compute
+# -----------------------------
+module "gce" {
+  source           = "../../../modules/gcp-gce"
+  name             = "dev-vm"
+  project_id       = var.project_id
+  zone             = var.zone
+  machine_type     = var.machine_type
+  subnet_self_link = module.network.subnet_self_link
+
   labels = {
     environment = "dev"
     managed_by  = "terraform"
+    cost_center = "devops"
   }
 }
