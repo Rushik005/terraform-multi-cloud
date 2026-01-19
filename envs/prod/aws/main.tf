@@ -25,19 +25,27 @@ module "network" {
 }
 
 # -----------------------------
-# Compute (Prod)
+# Compute wiht ALB + ASG (Prod)
 # -----------------------------
-module "ec2" {
-  source        = "../../../modules/aws-ec2"
-  name          = "prod-ec2"
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = module.network.vpc_id
-
-  tags = {
-    Environment = "prod"
-    ManagedBy   = "terraform"
-    CostCenter  = "production"
-    Criticality = "high"
-  }
+module "alb" {
+  source     = "../../../modules/aws-alb"
+  name       = "prod-alb"
+  vpc_id     = module.network.vpc_id
+  subnet_ids = module.network.subnet_ids
+  tags       = var.common_tags
 }
+
+module "asg" {
+  source             = "../../../modules/aws-asg"
+  name               = "prod-asg"
+  ami_id             = var.ami_id
+  instance_type      = var.instance_type
+  subnet_ids         = module.network.subnet_ids
+  target_group_arn  = module.alb.target_group_arn
+  min_size           = 2
+  max_size           = 6
+  desired_capacity   = 3
+  security_group_ids = [module.network.app_sg_id]
+  tags               = var.common_tags
+}
+
