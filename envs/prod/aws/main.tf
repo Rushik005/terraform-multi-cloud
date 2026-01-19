@@ -22,6 +22,7 @@ module "network" {
   vpc_cidr     = "10.20.0.0/16"
   subnet_cidr  = "10.20.1.0/24"
   az           = var.availability_zone
+  tags         = var.common_tags
 }
 
 # -----------------------------
