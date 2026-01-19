@@ -1,0 +1,45 @@
+name: Terraform Auto Plan
+
+on:
+  pull_request:
+    paths:
+      - "envs/**"
+      - "modules/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "envs/**"
+      - "modules/**"
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        environment: [dev, stage, prod]
+        cloud: [aws, gcp]
+
+    environment: ${{ matrix.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: envs/${{ matrix.environment }}/${{ matrix.cloud }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: envs/${{ matrix.environment }}/${{ matrix.cloud }}
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: envs/${{ matrix.environment }}/${{ matrix.cloud }}
