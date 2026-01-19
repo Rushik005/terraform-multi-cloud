@@ -1,7 +1,10 @@
 resource "google_compute_instance" "vm" {
   name         = var.name
-  machine_type = var.machine_type
+  project      = var.project_id
   zone         = var.zone
+  machine_type = var.machine_type
+  tags         = var.tags
+  labels       = var.labels
 
   boot_disk {
     initialize_params {
@@ -10,7 +13,7 @@ resource "google_compute_instance" "vm" {
   }
 
   network_interface {
-    subnetwork = var.subnet
+    subnetwork = var.subnet_self_link
     access_config {}
   }
 }
