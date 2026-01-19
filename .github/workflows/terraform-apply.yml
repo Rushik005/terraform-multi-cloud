@@ -1,0 +1,162 @@
+name: Terraform Apply (Promotion Pipeline)
+
+on:
+  workflow_dispatch:
+    inputs:
+      cloud:
+        description: "Target cloud provider"
+        required: true
+        type: choice
+        options:
+          - aws
+          - gcp
+
+jobs:
+# ===========================
+# DEV
+# ===========================
+  plan-dev:
+    name: Plan - Dev
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - run: terraform init
+        working-directory: envs/dev/${{ inputs.cloud }}
+
+      - run: terraform plan -out=tfplan
+        working-directory: envs/dev/${{ inputs.cloud }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dev-tfplan
+          path: envs/dev/${{ inputs.cloud }}/tfplan
+
+
+  apply-dev:
+    name: Apply - Dev
+    needs: plan-dev
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: dev-tfplan
+          path: envs/dev/${{ inputs.cloud }}
+
+      - run: terraform init
+        working-directory: envs/dev/${{ inputs.cloud }}
+
+      - run: terraform apply tfplan
+        working-directory: envs/dev/${{ inputs.cloud }}
+
+# ===========================
+# STAGE (PROMOTION)
+# ===========================
+  plan-stage:
+    name: Plan - Stage
+    needs: apply-dev
+    runs-on: ubuntu-latest
+    environment: stage
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - run: terraform init
+        working-directory: envs/stage/${{ inputs.cloud }}
+
+      - run: terraform plan -out=tfplan
+        working-directory: envs/stage/${{ inputs.cloud }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-tfplan
+          path: envs/stage/${{ inputs.cloud }}/tfplan
+
+
+  apply-stage:
+    name: Apply - Stage
+    needs: plan-stage
+    runs-on: ubuntu-latest
+    environment: stage
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage-tfplan
+          path: envs/stage/${{ inputs.cloud }}
+
+      - run: terraform init
+        working-directory: envs/stage/${{ inputs.cloud }}
+
+      - run: terraform apply tfplan
+        working-directory: envs/stage/${{ inputs.cloud }}
+
+# ===========================
+# PROD (FINAL PROMOTION)
+# ===========================
+  plan-prod:
+    name: Plan - Prod
+    needs: apply-stage
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - run: terraform init
+        working-directory: envs/prod/${{ inputs.cloud }}
+
+      - run: terraform plan -out=tfplan
+        working-directory: envs/prod/${{ inputs.cloud }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prod-tfplan
+          path: envs/prod/${{ inputs.cloud }}/tfplan
+
+
+  apply-prod:
+    name: Apply - Prod
+    needs: plan-prod
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: prod-tfplan
+          path: envs/prod/${{ inputs.cloud }}
+
+      - run: terraform init
+        working-directory: envs/prod/${{ inputs.cloud }}
+
+      - run: terraform apply tfplan
+        working-directory: envs/prod/${{ inputs.cloud }}
