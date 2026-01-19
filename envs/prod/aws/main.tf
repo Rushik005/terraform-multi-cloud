@@ -25,7 +25,7 @@ module "network" {
 }
 
 # -----------------------------
-# Compute wiht ALB + ASG (Prod)
+# Application Load Balancer
 # -----------------------------
 module "alb" {
   source     = "../../../modules/aws-alb"
@@ -35,6 +35,9 @@ module "alb" {
   tags       = var.common_tags
 }
 
+# -----------------------------
+# Auto Scaling Group
+# -----------------------------
 module "asg" {
   source             = "../../../modules/aws-asg"
   name               = "prod-asg"
