@@ -10,22 +10,22 @@ The design follows enterprise DevOps best practices, emphasizing:
 - Cost governance
 - Safe infrastructure promotion
 
-# 🚀 Key Features
+## 🚀 Key Features
 
-## ✅ Multi-Cloud Support
+### ✅ Multi-Cloud Support
 - AWS: ALB + Auto Scaling Group + Launch Templates
 - GCP: HTTP Load Balancer + Managed Instance Groups (MIG)
 
-## ✅ Environment Parity
+### ✅ Environment Parity
 - Identical architecture across dev, stage, and prod
 - Only scale, CIDR, and sizing differ
 
-## ✅ Blue/Green Deployments (GCP)
+### ✅ Blue/Green Deployments (GCP)
 - Surge-based MIG rolling updates
 - Zero downtime
 - Fast rollback
 
-## ✅ Terraform CI/CD
+### ✅ Terraform CI/CD
 - Auto-plan on PRs and commits
 - Manual approval for applies
 - Promotion-based pipeline (dev → stage → prod)
