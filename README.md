@@ -114,12 +114,12 @@ Features:
 
 ## 🏷️ Cost Allocation & Governance
 Mandatory tags/labels enforced via Terraform validation:
-## AWS Tags
+### AWS Tags
 - Environment
 - CostCenter
 - ManagedBy
 
-## GCP Labels
+### GCP Labels
 - environment
 - cost_center
 - managed_by
