@@ -60,60 +60,107 @@ Environment-scoped credentials
 
 Audit-friendly workflows
 
-📁 Repository Structure
+🧱 Architecture Overview
+AWS
 
-├── modules/
+VPC + Subnets
 
-│
+Application Load Balancer (ALB)
 
-│   ├── aws-network/
+Launch Template
 
-│
+Auto Scaling Group (ASG)
 
-│   ├── aws-alb/
+Health checks and self-healing
 
-│
+GCP
 
-│   ├── aws-asg/
+VPC + Subnet
 
-│   ├── gcp-network/
+Global HTTP Load Balancer
 
-│   ├── gcp-lb/
+Managed Instance Group (MIG)
 
-│   └── gcp-mig/
+Autoscaling based on CPU
 
-│
+Health-check driven instance replacement
 
-├── envs/
+🔄 Environment Strategy
+Environment	Purpose	Scale
+dev	Development & testing	Small
+stage	Pre-production validation	Medium
+prod	Production workloads	Large
 
-│   ├── dev/
+Rule:
 
-│   │   ├── aws/
+Architecture never changes. Only values do.
 
-│   │   └── gcp/
+🔐 Authentication & Security
+AWS
 
-│   ├── stage/
+GitHub Actions uses OIDC to assume IAM roles
 
-│   │   ├── aws/
+One role per environment:
 
-│   │   └── gcp/
+github-terraform-dev
 
-│   └── prod/
+github-terraform-stage
 
-│       ├── aws/
+github-terraform-prod
 
-│       └── gcp/
+No long-lived access keys
 
-│
+GCP
 
-├── .github/
+Local: Application Default Credentials (ADC)
 
-│   └── workflows/
+CI/CD: Workload Identity Federation or service account
 
-│       ├── terraform-autoplan.yml
+Environment-scoped permissions
 
-│       └── terraform-apply.yml
+🚫 No credentials are committed to this repository
 
-│
+🤖 CI/CD Workflows
 
-└── README.md
+1️⃣ Terraform Auto-Plan
+
+File: .github/workflows/terraform-autoplan.yml
+
+Runs automatically on:
+
+Pull requests
+
+Commits to main
+
+Actions:
+
+terraform init
+
+terraform validate
+
+terraform plan
+
+✔ No infrastructure changes
+
+✔ Fast feedback for reviewers
+
+2️⃣ Terraform Apply (Promotion Pipeline)
+
+File: .github/workflows/terraform-apply.yml
+
+Triggered manually.
+
+Flow:
+
+Dev → Stage → Prod
+
+
+Features:
+
+Separate plan and apply jobs
+
+Manual approval gates via GitHub Environments
+
+Environment-scoped credentials
+
+Full audit trail
