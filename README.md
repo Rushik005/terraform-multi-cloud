@@ -1,23 +1,15 @@
-# Terraform IaC for Multi-Environment AWS & GCP
-This repository demonstrates a modular Terraform design to provision
-and manage infrastructure across AWS and GCP with clear environment
-separation (dev / stage / prod).
+🌍 Multi-Cloud Terraform Infrastructure (AWS + GCP)
 
-## Features
-- Modular Terraform architecture
-- AWS and GCP support
-- Secure remote state with locking
-- Environment-specific configurations
-- Reusable and scalable design
+This repository provides a production-ready, multi-cloud Infrastructure-as-Code (IaC) framework using Terraform, supporting AWS and GCP with dev → stage → prod promotion, CI/CD pipelines, manual approval gates, and zero-downtime deployments.
 
-## Environments
-Each environment is isolated using:
-- Separate state backend
-- Separate variable files
-- Same reusable modules
+The design follows enterprise DevOps best practices, emphasizing:
 
-## Usage
-```bash
-terraform init
-terraform plan
-terraform apply
+Reusability
+
+Environment isolation
+
+Security (OIDC, no static credentials)
+
+Cost governance
+
+Safe infrastructure promotion
