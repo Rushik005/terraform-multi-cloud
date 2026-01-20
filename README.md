@@ -10,6 +10,34 @@ The design follows enterprise DevOps best practices, emphasizing:
 - Cost governance
 - Safe infrastructure promotion
 
+##  🚀 What This Project Delivers
+- Modular Terraform code for AWS and GCP
+- Identical architecture across dev, stage, and prod
+- CI/CD pipelines with plan/apply separation
+- Manual approval gates for production
+- Secure authentication using OIDC / Workload Identity
+- Autoscaling and health-checked infrastructure
+- Mandatory cost-allocation tagging and labeling
+- No credentials or secrets stored in code
+
+## ⚡ Quick Start
+### Prerequisites
+- Terraform v1.5+
+- AWS CLI (IAM role or profile configured)
+- gcloud CLI (Application Default Credentials)
+- GitHub Actions (for CI/CD)
+
+### Run Locally (Example: Dev on AWS)
+- cd envs/dev/aws
+- terraform init
+- terraform plan
+- terraform apply
+
+### CI/CD Usage
+- Open a Pull Request → Terraform plan runs automatically
+- Merge to main → Trigger apply pipeline with approvals
+- Promotion flow: dev → stage → prod
+
 ## 🚀 Key Features
 
 ### ✅ Multi-Cloud Support
