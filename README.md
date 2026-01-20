@@ -44,6 +44,7 @@ No secrets stored in the repository
 ## 📁 Repository Structure
 .
 ├── modules/                 # Reusable Terraform modules
+
 │   ├── aws-network/
 │   ├── aws-alb/
 │   ├── aws-asg/
