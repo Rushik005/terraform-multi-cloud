@@ -1,4 +1,4 @@
-🌍 # Multi-Cloud Terraform Infrastructure (AWS + GCP)
+# 🌍 Multi-Cloud Terraform Infrastructure (AWS + GCP)
 
 This repository provides a production-ready, multi-cloud Infrastructure-as-Code (IaC) framework using Terraform, supporting AWS and GCP with dev → stage → prod promotion, CI/CD pipelines, manual approval gates, and zero-downtime deployments.
 
@@ -10,46 +10,46 @@ The design follows enterprise DevOps best practices, emphasizing:
 - Cost governance
 - Safe infrastructure promotion
 
-🚀 Key Features
+# 🚀 Key Features
 
-✅ Multi-Cloud Support
+## ✅ Multi-Cloud Support
 - AWS: ALB + Auto Scaling Group + Launch Templates
 - GCP: HTTP Load Balancer + Managed Instance Groups (MIG)
 
-✅ Environment Parity
+## ✅ Environment Parity
 - Identical architecture across dev, stage, and prod
 - Only scale, CIDR, and sizing differ
 
-✅ Blue/Green Deployments (GCP)
+## ✅ Blue/Green Deployments (GCP)
 - Surge-based MIG rolling updates
 - Zero downtime
 - Fast rollback
 
-✅ Terraform CI/CD
+## ✅ Terraform CI/CD
 - Auto-plan on PRs and commits
 - Manual approval for applies
 - Promotion-based pipeline (dev → stage → prod)
 
-✅ Secure Authentication
+## ✅ Secure Authentication
 - AWS: GitHub OIDC → IAM Role (no access keys)
 - GCP: Workload Identity Federation / ADC
 
 No secrets stored in the repository
 
-✅ Governance & Cost Control
+## ✅ Governance & Cost Control
 - Mandatory cost-allocation tags/labels
 - Environment-scoped credentials
 - Audit-friendly workflows
 
-🧱 Architecture Overview
-AWS
+# 🧱 Architecture Overview
+## AWS
 - VPC + Subnets
 - Application Load Balancer (ALB)
 - Launch Template
 - Auto Scaling Group (ASG)
 - Health checks and self-healing
 
-GCP
+## GCP
 - VPC + Subnet
 - Global HTTP Load Balancer
 - Managed Instance Group (MIG)
