@@ -1,0 +1,84 @@
+name: Terraform Run
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      cloud:
+        required: true
+        type: string
+      action:
+        required: true
+        type: string   # plan | apply
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      # ----------------------------
+      # AWS Authentication (OIDC)
+      # ----------------------------
+      - name: Configure AWS Credentials
+        if: inputs.cloud == 'aws'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/github-terraform-${{ inputs.environment }}
+          aws-region: us-east-1
+
+      # ----------------------------
+      # GCP Authentication (OIDC)
+      # ----------------------------
+      - name: Authenticate to GCP
+        if: inputs.cloud == 'gcp'
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/123456789/locations/global/workloadIdentityPools/github/providers/github
+          service_account: terraform-${{ inputs.environment }}@my-project.iam.gserviceaccount.com
+
+      # ----------------------------
+      # Terraform Init
+      # ----------------------------
+      - name: Terraform Init
+        run: terraform init
+        working-directory: envs/${{ inputs.environment }}/${{ inputs.cloud }}
+
+      # ----------------------------
+      # Terraform Plan / Apply
+      # ----------------------------
+      - name: Terraform Plan
+        if: inputs.action == 'plan'
+        run: terraform plan -out=tfplan
+        working-directory: envs/${{ inputs.environment }}/${{ inputs.cloud }}
+
+      - name: Upload Plan
+        if: inputs.action == 'plan'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.environment }}-tfplan
+          path: envs/${{ inputs.environment }}/${{ inputs.cloud }}/tfplan
+
+      - name: Download Plan
+        if: inputs.action == 'apply'
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.environment }}-tfplan
+          path: envs/${{ inputs.environment }}/${{ inputs.cloud }}
+
+      - name: Terraform Apply
+        if: inputs.action == 'apply'
+        run: terraform apply tfplan
+        working-directory: envs/${{ inputs.environment }}/${{ inputs.cloud }}
