@@ -1,4 +1,4 @@
-# 🌍 Multi-Cloud Terraform Infrastructure (AWS + GCP)
+<img width="770" height="665" alt="image" src="https://github.com/user-attachments/assets/8ce12047-b182-4f8f-be8c-4326298aaf5a" /># 🌍 Multi-Cloud Terraform Infrastructure (AWS + GCP)
 
 This repository provides a production-ready, multi-cloud Infrastructure-as-Code (IaC) framework using Terraform, supporting AWS and GCP with dev → stage → prod promotion, CI/CD pipelines, manual approval gates, and zero-downtime deployments.
 
@@ -42,31 +42,8 @@ No secrets stored in the repository
 - Audit-friendly workflows
 
 ## 📁 Repository Structure
-**.**
-**├── modules/**                 # Reusable Terraform modules
-**│   ├── aws-network/**
-│   ├── aws-alb/
-│   ├── aws-asg/
-│   ├── gcp-network/
-│   ├── gcp-lb/
-│   └── gcp-mig/
-│
-├── envs/                    # Environment-specific root modules
-│   ├── dev/
-│   │   ├── aws/
-│   │   └── gcp/
-│   ├── stage/
-│   │   ├── aws/
-│   │   └── gcp/
-│   └── prod/
-│       ├── aws/
-│       └── gcp/
-│
-├── .github/workflows/       # CI/CD pipelines
-│   ├── terraform-autoplan.yml
-│   └── terraform-apply.yml
-│
-└── README.md
+<img width="770" height="665" alt="image" src="https://github.com/user-attachments/assets/297632f2-9241-488f-9e51-abdac9e96e65" />
+
 
 ## 🧱 Architecture Overview
 ### AWS
@@ -159,3 +136,4 @@ Terraform fails if these are missing.
 - Merge to main
 - Trigger terraform-apply.yml
 - Approve dev → stage → prod
+
