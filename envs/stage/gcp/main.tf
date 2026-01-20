@@ -23,22 +23,33 @@ module "network" {
   project_id  = var.project_id
   region      = var.region
   subnet_cidr = "10.20.0.0/24"
+  labels      = var.common_labels
 }
 
 # -----------------------------
-# Compute
+# Managed Instance Group (Auto Scaling)
 # -----------------------------
-module "gce" {
-  source           = "../../../modules/gcp-gce"
-  name             = "stage-vm"
+module "mig" {
+  source           = "../../../modules/gcp-mig"
+  name             = "stage-app"
   project_id       = var.project_id
+  region           = var.region
   zone             = var.zone
   machine_type     = var.machine_type
   subnet_self_link = module.network.subnet_self_link
 
-  labels = {
-    environment = "stage"
-    managed_by  = "terraform"
-    cost_center = "preprod"
-  }
+  min_replicas = 1
+  max_replicas = 3
+
+  labels = var.common_labels
+}
+
+# -----------------------------
+# HTTP Load Balancer
+# -----------------------------
+module "lb" {
+  source             = "../../../modules/gcp-lb"
+  name               = "stage-lb"
+  project_id         = var.project_id
+  backend_service_id = module.mig.instance_group
 }
