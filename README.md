@@ -1,4 +1,4 @@
-🌍 Multi-Cloud Terraform Infrastructure (AWS + GCP)
+#🌍 Multi-Cloud Terraform Infrastructure (AWS + GCP)
 
 This repository provides a production-ready, multi-cloud Infrastructure-as-Code (IaC) framework using Terraform, supporting AWS and GCP with dev → stage → prod promotion, CI/CD pipelines, manual approval gates, and zero-downtime deployments.
 
@@ -23,57 +23,38 @@ The design follows enterprise DevOps best practices, emphasizing:
 ✅ Blue/Green Deployments (GCP)
 - Surge-based MIG rolling updates
 - Zero downtime
-
-Fast rollback
+- Fast rollback
 
 ✅ Terraform CI/CD
-
-Auto-plan on PRs and commits
-
-Manual approval for applies
-
-Promotion-based pipeline (dev → stage → prod)
+- Auto-plan on PRs and commits
+- Manual approval for applies
+- Promotion-based pipeline (dev → stage → prod)
 
 ✅ Secure Authentication
-
-AWS: GitHub OIDC → IAM Role (no access keys)
-
-GCP: Workload Identity Federation / ADC
+- AWS: GitHub OIDC → IAM Role (no access keys)
+- GCP: Workload Identity Federation / ADC
 
 No secrets stored in the repository
 
 ✅ Governance & Cost Control
-
-Mandatory cost-allocation tags/labels
-
-Environment-scoped credentials
-
-Audit-friendly workflows
+- Mandatory cost-allocation tags/labels
+- Environment-scoped credentials
+- Audit-friendly workflows
 
 🧱 Architecture Overview
 AWS
-
-VPC + Subnets
-
-Application Load Balancer (ALB)
-
-Launch Template
-
-Auto Scaling Group (ASG)
-
-Health checks and self-healing
+- VPC + Subnets
+- Application Load Balancer (ALB)
+- Launch Template
+- Auto Scaling Group (ASG)
+- Health checks and self-healing
 
 GCP
-
-VPC + Subnet
-
-Global HTTP Load Balancer
-
-Managed Instance Group (MIG)
-
-Autoscaling based on CPU
-
-Health-check driven instance replacement
+- VPC + Subnet
+- Global HTTP Load Balancer
+- Managed Instance Group (MIG)
+- Autoscaling based on CPU
+- Health-check driven instance replacement
 
 🔄 Environment Strategy
 Environment	Purpose	Scale
@@ -82,8 +63,7 @@ stage	Pre-production validation	Medium
 prod	Production workloads	Large
 
 Rule:
-
-Architecture never changes. Only values do.
+- Architecture never changes. Only values do.
 
 🔐 Authentication & Security
 AWS
