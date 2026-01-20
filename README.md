@@ -4,15 +4,14 @@ This repository provides a production-ready, multi-cloud Infrastructure-as-Code 
 
 The design follows enterprise DevOps best practices, emphasizing:
 
-Reusability
+- Reusability
 
-Environment isolation
+- Environment isolation
 
-Security (OIDC, no static credentials)
+- Security (OIDC, no static credentials)
 
-Cost governance
-
-Safe infrastructure promotion
+- Cost governance
+- Safe infrastructure promotion
 
 🚀 Key Features
 
