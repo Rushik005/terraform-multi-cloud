@@ -61,12 +61,18 @@ Environment-scoped credentials
 Audit-friendly workflows
 
 📁 Repository Structure
-.
+
 ├── modules/
+
+│
 
 │   ├── aws-network/
 
+│
+
 │   ├── aws-alb/
+
+│
 
 │   ├── aws-asg/
 
