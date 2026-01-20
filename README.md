@@ -30,107 +30,105 @@ The design follows enterprise DevOps best practices, emphasizing:
 - Manual approval for applies
 - Promotion-based pipeline (dev → stage → prod)
 
-## ✅ Secure Authentication
+### ✅ Secure Authentication
 - AWS: GitHub OIDC → IAM Role (no access keys)
 - GCP: Workload Identity Federation / ADC
 
 No secrets stored in the repository
 
-## ✅ Governance & Cost Control
+### ✅ Governance & Cost Control
 - Mandatory cost-allocation tags/labels
 - Environment-scoped credentials
 - Audit-friendly workflows
 
-# 🧱 Architecture Overview
-## AWS
+## 🧱 Architecture Overview
+### AWS
 - VPC + Subnets
 - Application Load Balancer (ALB)
 - Launch Template
 - Auto Scaling Group (ASG)
 - Health checks and self-healing
 
-## GCP
+### GCP
 - VPC + Subnet
 - Global HTTP Load Balancer
 - Managed Instance Group (MIG)
 - Autoscaling based on CPU
 - Health-check driven instance replacement
 
-🔄 Environment Strategy
+## 🔄 Environment Strategy
 Environment	Purpose	Scale
 dev	Development & testing	Small
 stage	Pre-production validation	Medium
 prod	Production workloads	Large
 
-Rule:
+### Rule:
 - Architecture never changes. Only values do.
 
-🔐 Authentication & Security
-AWS
+## 🔐 Authentication & Security
+### AWS
+- GitHub Actions uses OIDC to assume IAM roles
+- One role per environment:
+     - github-terraform-dev
+     - github-terraform-stage
+     - github-terraform-prod
+- No long-lived access keys
 
-GitHub Actions uses OIDC to assume IAM roles
-
-One role per environment:
-
-github-terraform-dev
-
-github-terraform-stage
-
-github-terraform-prod
-
-No long-lived access keys
-
-GCP
-
-Local: Application Default Credentials (ADC)
-
-CI/CD: Workload Identity Federation or service account
-
-Environment-scoped permissions
+### GCP
+- Local: Application Default Credentials (ADC)
+- CI/CD: Workload Identity Federation or service account
+- Environment-scoped permissions
 
 🚫 No credentials are committed to this repository
 
-🤖 CI/CD Workflows
-
-1️⃣ Terraform Auto-Plan
-
-File: .github/workflows/terraform-autoplan.yml
+## 🤖 CI/CD Workflows
+### 1️⃣ Terraform Auto-Plan
+**File:** .github/workflows/terraform-autoplan.yml
 
 Runs automatically on:
-
-Pull requests
-
-Commits to main
+- Pull requests
+- Commits to main
 
 Actions:
-
-terraform init
-
-terraform validate
-
-terraform plan
+- terraform init
+- terraform validate
+- terraform plan
 
 ✔ No infrastructure changes
-
 ✔ Fast feedback for reviewers
 
-2️⃣ Terraform Apply (Promotion Pipeline)
-
-File: .github/workflows/terraform-apply.yml
+### 2️⃣ Terraform Apply (Promotion Pipeline)
+**File:** .github/workflows/terraform-apply.yml
 
 Triggered manually.
 
 Flow:
-
-Dev → Stage → Prod
+- **Dev → Stage → Prod**
 
 
 Features:
+- Separate plan and apply jobs
+- Manual approval gates via GitHub Environments
+- Environment-scoped credentials
+- Full audit trail
 
-Separate plan and apply jobs
+## 🏷️ Cost Allocation & Governance
+Mandatory tags/labels enforced via Terraform validation:
+## AWS Tags
+- Environment
+- CostCenter
+- ManagedBy
 
-Manual approval gates via GitHub Environments
+## GCP Labels
+- environment
+- cost_center
+- managed_by
 
-Environment-scoped credentials
+Terraform fails if these are missing.
 
-Full audit trail
+## 🧑‍💻 CI/CD Usage
+- Open PR → auto-plan runs
+- Review Terraform plan
+- Merge to main
+- Trigger terraform-apply.yml
+- Approve dev → stage → prod
