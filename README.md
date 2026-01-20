@@ -69,24 +69,45 @@ Audit-friendly workflows
 │   ├── aws-alb/
 
 │   ├── aws-asg/
+
 │   ├── gcp-network/
+
 │   ├── gcp-lb/
+
 │   └── gcp-mig/
+
 │
+
 ├── envs/
+
 │   ├── dev/
+
 │   │   ├── aws/
+
 │   │   └── gcp/
+
 │   ├── stage/
+
 │   │   ├── aws/
+
 │   │   └── gcp/
+
 │   └── prod/
+
 │       ├── aws/
+
 │       └── gcp/
+
 │
+
 ├── .github/
+
 │   └── workflows/
+
 │       ├── terraform-autoplan.yml
+
 │       └── terraform-apply.yml
+
 │
+
 └── README.md
