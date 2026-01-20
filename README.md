@@ -5,38 +5,58 @@ This repository provides a production-ready, multi-cloud Infrastructure-as-Code 
 The design follows enterprise DevOps best practices, emphasizing:
 
 Reusability
+
 Environment isolation
+
 Security (OIDC, no static credentials)
+
 Cost governance
+
 Safe infrastructure promotion
 
 🚀 Key Features
 ✅ Multi-Cloud Support
+
 AWS: ALB + Auto Scaling Group + Launch Templates
+
 GCP: HTTP Load Balancer + Managed Instance Groups (MIG)
 
 ✅ Environment Parity
+
 Identical architecture across dev, stage, and prod
+
 Only scale, CIDR, and sizing differ
 
 ✅ Blue/Green Deployments (GCP)
+
 Surge-based MIG rolling updates
+
 Zero downtime
+
 Fast rollback
 
 ✅ Terraform CI/CD
+
 Auto-plan on PRs and commits
+
 Manual approval for applies
+
 Promotion-based pipeline (dev → stage → prod)
 
 ✅ Secure Authentication
+
 AWS: GitHub OIDC → IAM Role (no access keys)
+
 GCP: Workload Identity Federation / ADC
+
 No secrets stored in the repository
 
 ✅ Governance & Cost Control
+
 Mandatory cost-allocation tags/labels
+
 Environment-scoped credentials
+
 Audit-friendly workflows
 
 📁 Repository Structure
