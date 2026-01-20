@@ -15,6 +15,7 @@ Cost governance
 Safe infrastructure promotion
 
 🚀 Key Features
+
 ✅ Multi-Cloud Support
 
 AWS: ALB + Auto Scaling Group + Launch Templates
@@ -62,8 +63,11 @@ Audit-friendly workflows
 📁 Repository Structure
 .
 ├── modules/
+
 │   ├── aws-network/
+
 │   ├── aws-alb/
+
 │   ├── aws-asg/
 │   ├── gcp-network/
 │   ├── gcp-lb/
