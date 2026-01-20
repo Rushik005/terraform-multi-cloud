@@ -42,9 +42,9 @@ No secrets stored in the repository
 - Audit-friendly workflows
 
 ## 📁 Repository Structure
-### .
-### ├── modules/                 # Reusable Terraform modules
-### │   ├── aws-network/
+**.**
+**├── modules/**                 # Reusable Terraform modules
+**│   ├── aws-network/**
 │   ├── aws-alb/
 │   ├── aws-asg/
 │   ├── gcp-network/
