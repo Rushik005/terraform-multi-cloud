@@ -42,55 +42,31 @@ No secrets stored in the repository
 - Audit-friendly workflows
 
 ## 📁 Repository Structure
-.
-├── modules/                 # Reusable Terraform modules
-
-│   ├── aws-network/
-
+### .
+### ├── modules/                 # Reusable Terraform modules
+### │   ├── aws-network/
 │   ├── aws-alb/
-
 │   ├── aws-asg/
-
 │   ├── gcp-network/
-
 │   ├── gcp-lb/
-
 │   └── gcp-mig/
-
 │
-
 ├── envs/                    # Environment-specific root modules
-
 │   ├── dev/
-
 │   │   ├── aws/
-
 │   │   └── gcp/
-
 │   ├── stage/
-
 │   │   ├── aws/
-
 │   │   └── gcp/
-
 │   └── prod/
-
 │       ├── aws/
-
 │       └── gcp/
-
 │
-
 ├── .github/workflows/       # CI/CD pipelines
-
 │   ├── terraform-autoplan.yml
-
 │   └── terraform-apply.yml
-
 │
-
 └── README.md
-
 
 ## 🧱 Architecture Overview
 ### AWS
